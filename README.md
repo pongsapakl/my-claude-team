@@ -4,6 +4,13 @@ It appears to me that there are so many productivity frameworks out there trying
 
 This repo serves as my archive/backup for my workflow (integrated with Claude Code, obviously), yet I try to make it more generic by moving project-specific information to the `CLAUDE.md` file and letting agents read from there to make this tool more reusable for other projects. If you find this interesting, please feel free to test it out, fork it—comments are appreciated, yet I can't confirm I'll fix issues since it is my workflow for my needs after all. Also feel free to basically fetch this to Claude and let it generate your own version of this. Well, maybe fetching some other repo might provide more polished ideas, but whatever.
 
+## Quick Install
+
+```bash
+/plugin marketplace add pongsapakl/my-claude-team 
+/plugin install my-claude-team 
+```
+
 ## Functionality
 
 There are 4 main parts: agents, skills, commands, and rules.
