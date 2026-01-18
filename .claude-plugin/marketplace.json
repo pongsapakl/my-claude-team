@@ -1,0 +1,12 @@
+{
+  "name": "pongsapakl-plugin-marketplace",
+  "owner": {
+    "name": "Pongsapak Lueangratana"
+  },
+  "plugins": [
+    {
+      "name": "my-claude-team",
+      "source": "./"
+    }
+  ]
+}
