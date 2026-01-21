@@ -54,7 +54,7 @@ This is a growing function from `session-log`. Normally with Claude plan mode, i
 - Creates rationale-driven plan with task groups
 - Exports to project directory
 
-**Update**: Looks like Anthropic has this [Clear Context before Plan Exeuction](https://x.com/bcherny/status/2012663636465254662) integrated, they are targetting similar pain point so this skill might be deprecated in the future soon. Though I still find it useful to have a log of what is discussed and what is done outside claude folder, and this feature still doesn't solve cross session integrity cleanly (i guess they will be able to sooner or later).
+**Update**: Looks like Anthropic has this [Clear Context before Plan Exeuction](https://x.com/bcherny/status/2012663636465254662) integrated, they are targetting similar pain point so this skill might be deprecated in the future soon. Though I still find it useful to have a log of what is discussed and what is done outside claude folder, and this feature still doesn't solve cross session / cross model integrity cleanly (i guess they will be able to sooner or later). [I sometime use claude to plan and antigravity to execute to save cost lol]
 
 ### `/deployment-check`
 
