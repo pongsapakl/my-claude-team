@@ -18,14 +18,17 @@ Trigger when user says:
 
 ## How It Works
 
-1. **Analyze conversation** - Review full conversation history automatically
-2. **Determine type** - Implementation session (coding) or General session (planning/discussion)
-3. **Extract key info** - Summary, decisions, technical details, challenges, action items
-4. **Generate filename** - `YYYY-MM-DD-brief-topic.md` based on main topic
-5. **Save log** - Write to `.claude/memory/session-logs/`
-6. **Confirm** - Show summary to user
+1. **Detect project directory** - Use `pwd` to get current working directory
+2. **Analyze conversation** - Review full conversation history automatically
+3. **Determine type** - Implementation session (coding) or General session (planning/discussion)
+4. **Extract key info** - Summary, decisions, technical details, challenges, action items
+5. **Generate filename** - `YYYY-MM-DD-brief-topic.md` based on main topic
+6. **Save log** - Write to `{cwd}/.claude/memory/session-logs/` (project-local, not global)
+7. **Confirm** - Show summary to user
 
 **No menus, no questions** - fully automatic based on context.
+
+**IMPORTANT**: Always save to the current working directory's `.claude/memory/session-logs/`, NOT to `~/.claude/`. Each project maintains its own session logs.
 
 ## Session Log Templates
 
@@ -117,13 +120,15 @@ User: "save this session"
   ↓
 Skill auto-invokes
   ↓
+Gets working directory: pwd → /Users/user/Projects/MyProject
+  ↓
 Analyzes conversation (debugging SessionEnd hook)
   ↓
 Determines: General session
   ↓
 Generates filename: 2025-12-28-sessionend-hook-debugging.md
   ↓
-Saves to .claude/memory/session-logs/
+Saves to /Users/user/Projects/MyProject/.claude/memory/session-logs/
   ↓
 Confirms: ✅ Session log saved
 ```
@@ -141,9 +146,9 @@ Use lowercase with dashes. Keep brief but descriptive (3-5 words max).
 
 ## Tools Usage
 
+- **Bash**: Get current working directory (`pwd`) and current date for filename
 - **Read**: Check existing sessions for related content
-- **Write**: Save session log file
-- **Bash**: Get current date for filename
+- **Write**: Save session log file to `{cwd}/.claude/memory/session-logs/`
 - **Grep**: Search for related sessions (optional)
 
 ## Key Principles
