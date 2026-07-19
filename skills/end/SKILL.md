@@ -75,7 +75,8 @@ Here's what I captured from this session (Track: {track name}):
 - surprising finding or insight
 
 **Next Session Starts With:**
-"[proposed handoff note]"
+"[proposed handoff note — or "None — session closed cleanly" if this session
+left nothing to pick up; see Step 5]"
 
 Does this look right? Anything to add or change?
 ```
@@ -139,14 +140,30 @@ Reference specific files and line numbers.]
 - [Patterns or techniques worth remembering]
 
 ## Next Session Starts With
-[THE MOST IMPORTANT FIELD — must pass quality test below]
+[THE MOST IMPORTANT FIELD — must pass quality test below. If this session left
+nothing to pick up, write "None — session closed cleanly. [reason]" instead of
+inventing an action or recycling old backlog.]
 ```
 
 If multiple sessions happen on the same date, append a suffix: `YYYY-MM-DD-topic-2.md`.
 
 ### Step 5: Quality-Test "Next Session Starts With"
 
-Before writing, verify the field passes **ALL** of these criteria:
+**First decide: does a genuine next action exist?** A session can end gracefully
+with nothing to hand off — e.g. it was purely advisory, it answered its own
+question, or all its work is done and confirmed. In that case write:
+
+```
+None — session closed cleanly. [One line on why: e.g. "Question asked and
+answered; decision logged to memory. No new work opened."]
+```
+
+**Do NOT fabricate a next action, and do NOT carry forward pre-existing backlog
+just to fill the field** — items already recorded in WORK.md are not this
+session's handoff. Only write a real next action when THIS session opened or
+advanced work that a future session must pick up.
+
+If a genuine next action exists, verify the field passes **ALL** of these criteria:
 
 1. **Starts with a verb** — "Run...", "Build...", "Test...", "Ask user..."
    - NOT "Continue working on..."
@@ -170,7 +187,8 @@ Read the current `WORK.md`. Then:
    - **Status**: update if changed
    - **Last session**: today's date + link to session log
    - **State**: from this session's done/half-done items
-   - **Next**: from "Next Session Starts With"
+   - **Next**: from "Next Session Starts With" (if "None — session closed
+     cleanly", leave the track's existing Next as-is)
    - **Key files**: from files touched this session
 
 2. **Merge into Open Questions** (append new, don't delete existing):
@@ -235,6 +253,12 @@ Next session starts with:
 
 This is the last thing the user sees — make it prominent.
 
+If the handoff was "None — session closed cleanly", replace the last block with:
+
+```
+No handoff — session closed cleanly. {one-line reason}
+```
+
 ## Session Log Guidelines
 
 - **Rich and narrative** — write for a future session (or human) that has zero context. Include the "why" and "how", not just the "what". When in doubt, include more detail rather than less.
@@ -252,7 +276,7 @@ This is the last thing the user sees — make it prominent.
 
 ## Key Principles
 
-1. **Handoff quality is non-negotiable** — the "Next Session Starts With" field must pass all four criteria
+1. **Handoff quality is non-negotiable** — the "Next Session Starts With" field must pass all four criteria, or honestly say "None — session closed cleanly". Never invent a next action or recycle existing backlog to fill it.
 2. **Confirm before writing** — always show the summary and wait for user approval
 3. **Rich and narrative** — detailed logs are a feature, not a bug. Future sessions depend on this context. Capture the story, not just the checkboxes.
 4. **Track-scoped updates** — only update the tracks you worked on. Never overwrite other tracks.
