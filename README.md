@@ -12,8 +12,11 @@ This repo serves as my archive/backup for my workflow (integrated with Claude Co
 
 ```bash
 /plugin marketplace add pongsapakl/pongsapakl-skills
-/plugin install handover
+/plugin install handover@pongsapakl-skills
 ```
+
+This repo is a marketplace. Each plugin installs on its own — `handover` is the
+only one so far.
 
 ## What Problem Does This Solve?
 
@@ -77,6 +80,19 @@ lives in. Everything else is context; that line is the handoff.
 `/handover:start` still need to know what `WORK.md` and `TODO.md` are. The block
 is delimited by `<!-- handover:begin -->` / `<!-- handover:end -->` sentinels, so
 re-running init updates it in place instead of appending a duplicate.
+
+## Repo Layout
+
+```text
+pongsapakl-skills/
+├── .claude-plugin/marketplace.json   ← lists every plugin
+└── handover/                         ← one plugin, installed on its own
+    ├── .claude-plugin/plugin.json
+    └── skills/{init,start,end}/
+```
+
+Plugins are top-level directories. Each has its own version and its own
+`skills` allowlist, so adding a group never touches an existing one.
 
 ## Scope
 

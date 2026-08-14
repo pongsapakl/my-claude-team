@@ -7,5 +7,10 @@
   },
   "license": "MIT",
   "repository": "https://github.com/pongsapakl/pongsapakl-skills",
-  "homepage": "https://github.com/pongsapakl/pongsapakl-skills#readme"
+  "homepage": "https://github.com/pongsapakl/pongsapakl-skills#readme",
+  "skills": [
+    "./skills/init",
+    "./skills/start",
+    "./skills/end"
+  ]
 }

@@ -7,7 +7,15 @@
   "plugins": [
     {
       "name": "handover",
-      "source": "./"
+      "source": "./handover",
+      "description": "Multi-track session handover for Claude Code. /handover:start opens a session from persisted state, /handover:end writes a narrative log and merges the active track — so context survives between sessions.",
+      "category": "productivity",
+      "keywords": [
+        "session",
+        "handover",
+        "context",
+        "continuity"
+      ]
     }
   ]
 }
