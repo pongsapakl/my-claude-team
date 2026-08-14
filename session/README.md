@@ -15,8 +15,6 @@ happened in the session and report on it.
 |---------|--------------|
 | `/session:end-gracefully` | Checks whether the session can be closed cleanly — half-done work, unresolved questions, unrecorded decisions, unverified claims, uncommitted changes. Read-only. |
 
-> Staged: not yet in `plugin.json`'s `skills` allowlist, so it does not ship.
-
 ## Why it isn't part of handover
 
 It needs to work in sessions that never ran `/handover:init` — a one-off in a
