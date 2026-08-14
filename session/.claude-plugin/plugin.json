@@ -1,0 +1,13 @@
+{
+  "name": "session",
+  "version": "0.1.0",
+  "description": "Skills that operate on the conversation rather than on project files — checking whether a working session can be closed cleanly.",
+  "author": {
+    "name": "Pongsapak Lueangratana"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/pongsapakl/pongsapakl-skills",
+  "homepage": "https://github.com/pongsapakl/pongsapakl-skills#readme",
+  "keywords": ["session", "review", "loose-ends"],
+  "skills": []
+}

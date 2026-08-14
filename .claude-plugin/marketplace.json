@@ -8,6 +8,10 @@
     {
       "name": "handover",
       "source": "./handover"
+    },
+    {
+      "name": "session",
+      "source": "./session"
     }
   ]
 }
