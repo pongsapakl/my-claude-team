@@ -38,6 +38,7 @@ what's available.
 |--------|---------------|
 | [`handover`](handover/) | File-based session handover — carry context across Claude Code sessions |
 | [`session`](session/) | Conversation-level checks — is this session safe to close? |
+| [`utils`](utils/) | Maintainer tools for this marketplace itself |
 
 Each plugin's own README has its skills, workflow, and design notes.
 
