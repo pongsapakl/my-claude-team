@@ -8,101 +8,76 @@ This repo serves as my archive/backup for my workflow (integrated with Claude Co
 
 [UPDATE v.0.5.0] I also feels like handing over session for me is really important. Despite there are things like `/compact` it is still not as good as i think it can be. That is why I use a file-based system to hand over session. This way, not only agent, but also us humans can catch up on what is left, what to do next more easily. Key is what is just done, and what to do next (along with related file).
 
+## What This Is
+
+My working Claude Code setup, published as a plugin marketplace. These are the
+skills I actually use and maintain — not a polished framework, and not trying to
+be one. Things get added when they earn their place and deleted when the usage
+data says they never did.
+
+Treat it as a live backup of my own setup that happens to be installable. Fork
+it, copy a skill out of it, or point Claude at it and generate your own.
+
 ## Quick Install
 
 ```bash
 /plugin marketplace add pongsapakl/pongsapakl-skills
-/plugin install handover@pongsapakl-skills
+/plugin install <plugin>@pongsapakl-skills
 ```
 
-This repo is a marketplace. Each plugin installs on its own — `handover` is the
-only one so far.
+Each plugin installs on its own. Browse them below or run `/plugin` to see
+what's available.
 
-## What Problem Does This Solve?
+## Plugins
 
-Claude Code sessions are ephemeral. When a session ends — context limit, credit
-cap, or just closing the terminal — everything about what you were doing, what
-you decided, and what comes next is gone. The next session starts from zero.
+| Plugin | What it's for |
+|--------|---------------|
+| [`handover`](handover/) | File-based session handover — carry context across Claude Code sessions |
 
-`handover` fixes that with a file-based handover system. `/handover:end` writes
-down what was done, what's half-finished, and a specific actionable note for
-next time. `/handover:start` reads it back and gets you (or Claude) up to speed
-in seconds.
-
-## The Three Files
-
-| File | Owner | Purpose |
-|------|-------|---------|
-| `TODO.md` | Human | Freeform scratchpad. Append-only — Claude never deletes or rewrites your entries. |
-| `WORK.md` | AI | Structured multi-track state. Each track is independent; `/handover:end` only updates the active one. |
-| `docs/sessions/*.md` | Both | Immutable narrative logs, one per session — the "what happened" story, not just checkboxes. |
-
-Multi-track matters if you work on several things in one repo: parallel
-workstreams keep separate state, so closing one session never clobbers another
-track's context.
-
-## Skills
-
-| Command | When | What it does |
-|---------|------|--------------|
-| `/handover:init` | Once per project | Creates `docs/`, `WORK.md`, `TODO.md`, updates `.gitignore`, and writes a Session Handover block into the project's `CLAUDE.md`. |
-| `/handover:start` | Opening a session | Reads `WORK.md`, `TODO.md`, and the latest session log; shows active tracks; asks which to focus on. |
-| `/handover:end` | Closing a session | Scans the conversation, writes a narrative session log, merges state into the active track, appends to `TODO.md`. |
-
-## Session Lifecycle
-
-```text
-  /handover:init          /handover:start           /handover:end
-  (once per project)      (open)                    (close)
-  ┌────────────────┐      ┌────────────────┐        ┌────────────────┐
-  │ docs/ folders  │      │ read WORK.md   │        │ write session  │
-  │ WORK.md        │─────▶│ + TODO.md      │───────▶│ log            │
-  │ TODO.md        │      │ + latest log   │        │ merge active   │
-  │ CLAUDE.md block│      │ pick a track   │        │ track only     │
-  └────────────────┘      └────────────────┘        └───────┬────────┘
-                                   ▲                        │
-                                   └────────────────────────┘
-                                        next session
-```
-
-## Design Notes
-
-**Why files instead of `/compact`.** Compaction is lossy and invisible — you
-can't read it, edit it, or hand it to a teammate. A file-based handover is
-inspectable by both the human and the agent, and it survives the session that
-created it.
-
-**Why the next-step note is the point.** The most valuable line in a session log
-isn't what was finished, it's the specific thing to do next and the file it
-lives in. Everything else is context; that line is the handoff.
-
-**Why `/handover:init` writes into `CLAUDE.md`.** Sessions that never run
-`/handover:start` still need to know what `WORK.md` and `TODO.md` are. The block
-is delimited by `<!-- handover:begin -->` / `<!-- handover:end -->` sentinels, so
-re-running init updates it in place instead of appending a duplicate.
+Each plugin's own README has its skills, workflow, and design notes.
 
 ## Repo Layout
 
 ```text
 pongsapakl-skills/
 ├── .claude-plugin/marketplace.json   ← lists every plugin
-└── handover/                         ← one plugin, installed on its own
-    ├── .claude-plugin/plugin.json
-    └── skills/{init,start,end}/
+└── <plugin>/                         ← one directory per plugin
+    ├── .claude-plugin/plugin.json    ← own name, version, skills allowlist
+    ├── README.md                     ← that plugin's docs
+    └── skills/<skill>/SKILL.md
 ```
 
-Plugins are top-level directories. Each has its own version and its own
-`skills` allowlist, so adding a group never touches an existing one.
+One repo, one marketplace, N plugins. Plugins version and install
+independently, so adding or changing one never touches another.
 
-## Scope
+## Adding a Plugin
 
-This repo is my working setup, published as-is. It used to ship a C-suite agent
-team, planning, research, and deployment-check skills; usage data across two
-months of sessions showed those were never invoked, so v1.0.0 removed them. What
-remains is the part I actually use every day.
+1. `mkdir -p <plugin>/.claude-plugin <plugin>/skills/<skill>`
+2. Write `<plugin>/.claude-plugin/plugin.json` — its own `name`, `version`, and
+   a `skills` array listing the skill directories that should ship
+3. Add one entry to `.claude-plugin/marketplace.json`:
+   `{ "name": "<plugin>", "source": "./<plugin>" }`
+4. `claude plugin validate .`
 
-Fork it, adapt it, or point Claude at it and generate your own. Issues and
-comments are welcome, but this tracks my workflow first.
+A skill directory that isn't in the `skills` allowlist doesn't ship — so
+unfinished skills can live on `main` without reaching anyone.
+
+Skill names only need to be unique *within* a plugin, so two plugins can both
+define a skill called `end`.
+
+## Docs
+
+Kept deliberately split so docs don't need touching every time a skill changes:
+
+| File | Scope | Changes when |
+|------|-------|--------------|
+| This README | The repo and its conventions | Layout or workflow changes — rarely |
+| `CLAUDE.md` | Conventions and decisions for working in this repo | A structural decision is made |
+| `<plugin>/README.md` | That plugin's skills and workflow | That plugin changes |
+| `<plugin>/.claude-plugin/plugin.json` | That plugin's identity and allowlist | Skills are added or removed |
+
+Nothing outside a plugin's own directory names its skills, so adding, renaming,
+or deleting a skill is a one-directory change.
 
 ## License
 

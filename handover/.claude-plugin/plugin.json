@@ -12,5 +12,11 @@
     "./skills/init",
     "./skills/start",
     "./skills/end"
+  ],
+  "keywords": [
+    "session",
+    "handover",
+    "context",
+    "continuity"
   ]
 }

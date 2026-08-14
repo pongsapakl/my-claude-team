@@ -1,21 +1,13 @@
 {
   "name": "pongsapakl-skills",
-  "description": "Pongsapak Lueangratana's Claude Code skills, published as installable plugins.",
+  "description": "Claude Code skills I actively use and maintain, published as installable plugins. A live backup of my own setup rather than a polished framework.",
   "owner": {
     "name": "Pongsapak Lueangratana"
   },
   "plugins": [
     {
       "name": "handover",
-      "source": "./handover",
-      "description": "Multi-track session handover for Claude Code. /handover:start opens a session from persisted state, /handover:end writes a narrative log and merges the active track — so context survives between sessions.",
-      "category": "productivity",
-      "keywords": [
-        "session",
-        "handover",
-        "context",
-        "continuity"
-      ]
+      "source": "./handover"
     }
   ]
 }
