@@ -1,6 +1,6 @@
 ---
 name: init
-description: Bootstrap workspace with docs structure, WORK.md, and TODO.md. Auto-invokes on "/init", "initialize workspace", "set up project structure".
+description: Bootstrap workspace with docs structure, WORK.md, and TODO.md. Auto-invokes on "/handover:init", "initialize workspace", "set up project structure".
 allowed-tools: [Bash, Write, Read, Glob, AskUserQuestion]
 ---
 
@@ -11,7 +11,7 @@ Sets up the documentation structure, live state file (WORK.md), and human scratc
 ## When to Auto-Invoke
 
 Trigger when user says:
-- `/init`
+- `/handover:init`
 - "initialize workspace"
 - "set up project structure"
 - "set up docs structure"
@@ -130,43 +130,36 @@ Present as multi-select:
 
 Append chosen entries to `.gitignore`. If `.gitignore` doesn't exist, create it.
 
-### Step 7: Install Plugin Rules (Optional)
+### Step 7: Write the Handover Block into CLAUDE.md
 
-Ask the user:
+The project's `CLAUDE.md` is what every session loads, including sessions that
+never run `/handover:start`. Without this block, a passing session sees `WORK.md` and
+`TODO.md` and has no idea what they are.
 
-"Install plugin rules to `.claude/rules/`? These provide session workflow, docs structure, git commit, security, and other conventions. (Yes / No)"
+Append the block below to the project's `CLAUDE.md`, creating the file if it
+does not exist.
 
-**If Yes:**
-
-1. Create `.claude/rules/` if it doesn't exist:
-```bash
-mkdir -p .claude/rules
-```
-
-2. Copy each rule file from the plugin's `rules/` directory. For each file, prepend a deprecation header comment, then write to the target project:
-
-Files to copy:
-- `cli-workflow.md`
-- `discussion-protocol.md`
-- `docs-structure.md`
-- `git-commit-workflow.md`
-- `security-standards.md`
-- `session-workflow.md`
-
-Each copied file must start with this comment block:
+**Idempotency:** the block is delimited by sentinel comments. If
+`<!-- handover:begin -->` already exists in the file, replace everything between
+the sentinels in place — do not append a second copy.
 
 ```markdown
-<!-- Installed by my-claude-setup plugin.
-     Native plugin rules support is expected in Claude Code — once available,
-     these files can be removed and rules will load automatically from the plugin. -->
+<!-- handover:begin -->
+## Session Handover
 
+This project uses three files to carry context across sessions.
+
+| File | Owner | Purpose |
+|------|-------|---------|
+| `TODO.md` | Human | Freeform scratchpad. Append-only — never delete or rewrite the user's entries. |
+| `WORK.md` | AI | Structured multi-track state. Each track is independent; only update the active one. |
+| `docs/sessions/*.md` | Both | Immutable narrative logs, one per session. |
+
+Run `/handover:start` to open a session and `/handover:end` to close one.
+Outside those skills, treat `WORK.md` as read-mostly and never clobber a track
+you are not working on.
+<!-- handover:end -->
 ```
-
-Then append the original rule content below it.
-
-Use `Read` to read each rule from the plugin directory, then `Write` to create the file in `.claude/rules/`.
-
-**If No:** Skip this step entirely.
 
 ### Step 8: Legacy Migration (if applicable)
 
@@ -197,29 +190,23 @@ Workspace initialized:
   .gitignore:
   - docs/sessions/ (ignored)
 
-  Rules (if installed):
-  - .claude/rules/cli-workflow.md
-  - .claude/rules/discussion-protocol.md
-  - .claude/rules/docs-structure.md
-  - .claude/rules/git-commit-workflow.md
-  - .claude/rules/security-standards.md
-  - .claude/rules/session-workflow.md
-  (Note: these can be removed once native plugin rules support lands)
+  CLAUDE.md:
+  - Added the Session Handover block
 
   Migration:
   - Moved 3 files from .claude/memory/session-logs/ to docs/sessions/
 
-Ready to use /start and /end for session management.
+Ready to use /handover:start and /handover:end for session management.
 
 File guide:
   TODO.md → Your notes. You own it. Claude appends, never deletes.
-  WORK.md → AI context. /end updates per-track, never overwrites other tracks.
+  WORK.md → AI context. /handover:end updates per-track, never overwrites other tracks.
   docs/sessions/ → Rich session logs (immutable archive).
 ```
 
 ## Important
 
-- This skill is **idempotent** — running `/init` twice should not break anything
+- This skill is **idempotent** — running `/handover:init` twice should not break anything
 - Use `{cwd}` (from `pwd`) for all paths, never hardcode
 - If `.gitignore` already has an entry, don't duplicate it
 - The skill creates structure only — it does not populate content beyond templates

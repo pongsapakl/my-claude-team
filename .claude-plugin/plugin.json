@@ -1,11 +1,11 @@
 {
-  "name": "my-claude-setup",
-  "version": "0.7.1",
-  "description": "Agent team framework with multi-track session handover (/start, /end), human-facing TODO.md + AI-facing WORK.md, rich narrative session logs, strategic planning, C-Suite agents, and deployment checks.",
+  "name": "handover",
+  "version": "1.0.0",
+  "description": "Multi-track session handover for Claude Code. /handover:start opens a session from persisted state, /handover:end writes a narrative log and merges the active track — so context survives between sessions.",
   "author": {
     "name": "Pongsapak Lueangratana"
   },
   "license": "MIT",
-  "repository": "https://github.com/pongsapakl/my-claude-setup",
-  "homepage": "https://github.com/pongsapakl/my-claude-setup#readme"
+  "repository": "https://github.com/pongsapakl/pongsapakl-skills",
+  "homepage": "https://github.com/pongsapakl/pongsapakl-skills#readme"
 }

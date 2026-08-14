@@ -1,6 +1,6 @@
 ---
 name: start
-description: Begin a work session — reads current state, shows active tracks, validates handoff quality, presents onboarding summary. Auto-invokes on "/start", "start session".
+description: Begin a work session — reads current state, shows active tracks, validates handoff quality, presents onboarding summary. Auto-invokes on "/handover:start", "start session".
 allowed-tools: [Read, Glob, Bash, AskUserQuestion]
 ---
 
@@ -11,7 +11,7 @@ Reads current project state and onboards you into a new session. This is a **rea
 ## When to Auto-Invoke
 
 Trigger when user says:
-- `/start`
+- `/handover:start`
 - "start session"
 - "begin session"
 - "pick up where we left off"
@@ -26,7 +26,7 @@ Read these files from the project root:
 2. `TODO.md` — human scratchpad (if it exists)
 
 If `WORK.md` does not exist:
-- Say: "No WORK.md found. Run `/init` to set up the workspace first."
+- Say: "No WORK.md found. Run `/handover:init` to set up the workspace first."
 - Stop here.
 
 ### Step 2: Find Latest Session Log(s)
@@ -116,7 +116,7 @@ Present options based on tracks + last session handoff:
 4. Start a new track
 ```
 
-**Record the user's track selection** — this determines which track(s) `/end` will update later. Mention this: "Got it — I'll scope this session to [track name]. `/end` will only update that track in WORK.md."
+**Record the user's track selection** — this determines which track(s) `/handover:end` will update later. Mention this: "Got it — I'll scope this session to [track name]. `/handover:end` will only update that track in WORK.md."
 
 ## Important
 
@@ -125,7 +125,7 @@ Present options based on tracks + last session handoff:
 - Show TODO.md highlights to restore the user's own mental context
 - All paths are relative to the project root
 - If WORK.md and session log disagree on state, prefer the session log (more recent)
-- **Declare the active track(s)** — this scopes what `/end` will update
+- **Declare the active track(s)** — this scopes what `/handover:end` will update
 
 ## Tools Usage
 

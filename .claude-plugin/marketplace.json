@@ -1,11 +1,11 @@
 {
-  "name": "pongsapakl-plugin-marketplace",
+  "name": "pongsapakl-skills",
   "owner": {
     "name": "Pongsapak Lueangratana"
   },
   "plugins": [
     {
-      "name": "my-claude-setup",
+      "name": "handover",
       "source": "./"
     }
   ]

@@ -2,16 +2,17 @@
 
 ## Project Overview
 
-**my-claude-setup** is a Claude Code plugin that provides a multi-track session handover system and virtual C-suite advisory team. It solves the problem of ephemeral Claude Code sessions by persisting context across sessions via a three-file architecture: TODO.md (human scratchpad), WORK.md (AI context), and rich narrative session logs.
+**pongsapakl-skills** is a Claude Code plugin marketplace. It currently ships one
+plugin, **handover**, which solves the problem of ephemeral Claude Code sessions
+by persisting context across them via a three-file architecture: TODO.md (human
+scratchpad), WORK.md (AI context), and rich narrative session logs.
 
 ## Project Structure
 
 ```
-my-claude-setup/
-├── agents/          # 8 agent definitions (CEO, CTO, CMO, CFO, Product Lead, Security Officer, Code Reviewer, License Officer)
-├── skills/          # 8 skills: init, start, end, plan, research, c-suite-meeting, deployment-checker, infra-checker
-├── rules/           # 6 plugin rules: docs-structure, session-workflow, cli-workflow, discussion-protocol, git-commit-workflow, security-standards
-├── .claude-plugin/  # Plugin manifest (plugin.json)
+pongsapakl-skills/
+├── skills/          # 3 skills: init, start, end
+├── .claude-plugin/  # marketplace.json (marketplace) + plugin.json (handover)
 ├── LICENSE
 └── README.md
 ```
@@ -19,18 +20,22 @@ my-claude-setup/
 ## Key Concepts
 
 - **Three-file architecture**: TODO.md (human), WORK.md (AI), session logs (both)
-- **Multi-track WORK.md**: Parallel workstreams don't clobber each other; /end only updates the active track
+- **Multi-track WORK.md**: Parallel workstreams don't clobber each other; `/handover:end` only updates the active track
 - **TODO.md**: Append-only freeform scratchpad; Claude never deletes user content
 - **Rich session logs**: Narrative "What Happened" stories, not just checkboxes
-- **Session lifecycle**: /init (once) -> /start (begin, pick track) -> work -> /end (close, merge-update track)
-- **Mid-session documentation**: Decisions and research captured immediately, not just at /end
-- **Default-write artifacts**: ADRs and research docs drafted by default (opt-out, not opt-in)
+- **Session lifecycle**: `/handover:init` (once) → `/handover:start` → work → `/handover:end`
+- **CLAUDE.md block**: `/handover:init` writes a sentinel-delimited Session Handover block into the target project's CLAUDE.md, so sessions that never run `/handover:start` still understand the file contract
 
 ## Development Notes
 
-- Plugin is installed via: `/plugin marketplace add pongsapakl/my-claude-setup`
-- Skills are defined in `skills/<name>/SKILL.md` files
-- Agents are markdown files in `agents/`
-- Rules are markdown files in `rules/`
+- Installed via `/plugin marketplace add pongsapakl/pongsapakl-skills` then `/plugin install handover`
+- Skills are defined in `skills/<name>/SKILL.md` (uppercase filename — a lowercase `skill.md` will not load reliably)
+- Marketplace name and plugin name are separate: the repo/marketplace is `pongsapakl-skills`, the plugin is `handover`, and the plugin name is what prefixes commands (`/handover:start`)
 - Version is tracked in `.claude-plugin/plugin.json`
-- The README has a hand-written intro section that should not be edited by Claude (marked with a comment)
+- The README has a hand-written intro section above `## Quick Install` that should not be edited by Claude
+
+## Decisions
+
+- **v1.0.0 — removed agents, rules, and 5 skills.** Two months of session logs showed zero invocations of all 8 C-suite/review agents and of `/c-suite-meeting`, `/research`, `/plan`, `/deployment-checker`, `/infra-checker`. Native plan mode and the built-in Plan/Explore agents cover the planning and research cases. Kept only what usage data supported: init, start, end.
+- **Rules directory deleted.** Rules were never a plugin capability — `/init` hand-copied them into `.claude/rules/` with a "native support expected" deprecation header that never landed. Replaced with a generated CLAUDE.md block owned by the init skill, which has no version-drift problem.
+- **Repo is a marketplace, not a single plugin.** Lets future skills ship as sibling plugins with short invocation prefixes instead of one long namespace.

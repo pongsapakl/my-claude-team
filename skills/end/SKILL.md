@@ -1,6 +1,6 @@
 ---
 name: end
-description: End a work session — scans conversation, writes rich session log, merges track state into WORK.md (without overwriting other tracks), appends to TODO.md. Auto-invokes on "/end", "end session", "wrap up".
+description: End a work session — scans conversation, writes rich session log, merges track state into WORK.md (without overwriting other tracks), appends to TODO.md. Auto-invokes on "/handover:end", "end session", "wrap up".
 allowed-tools: [Read, Write, Grep, Glob, Bash, AskUserQuestion]
 ---
 
@@ -11,7 +11,7 @@ Closes the current session with a rich, narrative session log and track-scoped u
 ## When to Auto-Invoke
 
 Trigger when user says:
-- `/end`
+- `/handover:end`
 - "end session" / "close session"
 - "wrap up" / "let's wrap up"
 - "save and close"
@@ -21,7 +21,7 @@ Trigger when user says:
 
 ### Step 1: Identify Active Track(s)
 
-Check what track(s) were declared at `/start`. If `/start` wasn't used, ask:
+Check what track(s) were declared at `/handover:start`. If `/handover:start` wasn't used, ask:
 
 "Which track(s) did you work on this session?"
 
@@ -223,7 +223,7 @@ Read TODO.md first. Then append after the most recent date entry (or after "## A
 
 If the "Active Tracks" section exists, update track statuses (add new tracks, update emoji status). But never delete tracks from this list.
 
-If `TODO.md` doesn't exist, skip this step (don't create it — that's `/init`'s job).
+If `TODO.md` doesn't exist, skip this step (don't create it — that's `/handover:init`'s job).
 
 ### Step 8: Trigger Documentation Generation
 
