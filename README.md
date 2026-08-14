@@ -1,6 +1,6 @@
 # pongsapakl-skills
 
-[Claude when you update readme please dont edit this part. This is handwritten (or handtyped) and I wanted to keep it as is. Below ## Quick Install you can do whatever you are born to do.]
+<!-- [Claude when you update readme please dont edit this part. This is handwritten (or handtyped) and I wanted to keep it as is. Below ## Quick Install you can do whatever you are born to do.] -->
 
 It appears to me that there are so many productivity frameworks out there trying to utilize the function of agents, skills, etc. as provided by Claude. Yet I find many of them are more generic and load everything up front (which I find somewhat annoying) and not tailored to my own needs. So, I created a custom one based on those frameworks out there and made it fit my requirements a little more. It is very basic yet so powerful for my workflow.
 
@@ -10,12 +10,14 @@ This repo serves as my archive/backup for my workflow (integrated with Claude Co
 
 ## What This Is
 
-My working Claude Code setup, published as a plugin marketplace. These are the
-skills I actually use and maintain — not a polished framework, and not trying to
-be one. Things get added when they earn their place and deleted when the usage
-data says they never did.
+A living record of how I work with Claude Code, published as a plugin
+marketplace. These are the skills I actually use and maintain.
 
-Treat it as a live backup of my own setup that happens to be installable. Fork
+It grows and gets pruned over time. Skills get added when they earn their place
+and removed when they stop being used — v1.0.0 dropped eight agents and five
+skills that two months of session logs showed I never invoked once.
+
+Treat it as a live mirror of my own setup that happens to be installable. Fork
 it, copy a skill out of it, or point Claude at it and generate your own.
 
 ## Quick Install

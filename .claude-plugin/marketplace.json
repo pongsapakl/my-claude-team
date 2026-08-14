@@ -1,6 +1,6 @@
 {
   "name": "pongsapakl-skills",
-  "description": "Claude Code skills I actively use and maintain, published as installable plugins. A live backup of my own setup rather than a polished framework.",
+  "description": "A living record of how I work with Claude Code, published as installable plugins.",
   "owner": {
     "name": "Pongsapak Lueangratana"
   },

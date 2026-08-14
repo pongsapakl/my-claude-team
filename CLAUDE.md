@@ -3,9 +3,10 @@
 ## What This Repo Is
 
 **pongsapakl-skills** is a Claude Code plugin marketplace holding the skills the
-owner actively uses. It is a live backup of a working setup, not a product —
-skills get added when they earn their place and removed when usage data says
-they didn't. Expect churn in `<plugin>/`, not in the repo's shape.
+owner actively uses — a living record of a working setup. It grows and gets
+pruned over time: skills are added when they earn their place and removed when
+usage data says they stopped being used. Expect churn inside `<plugin>/`, not in
+the repo's shape.
 
 ## Structure
 
@@ -49,6 +50,13 @@ one-directory change.
 
 `README.md` has a hand-written intro above `## What This Is` that must not be
 edited by Claude.
+
+## Maintenance Notes
+
+If `.claude/MAINTAINING.md` exists, read it — it holds the owner's maintenance
+workflow (how to add skills and plugins, which docs to update, how to decide
+what's worth keeping). It is gitignored and machine-local, so it won't be
+present in a fresh clone; nothing in this file depends on it.
 
 ## Decisions
 
