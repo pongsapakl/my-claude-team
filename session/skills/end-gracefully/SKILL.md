@@ -1,105 +1,90 @@
 ---
 name: end-gracefully
-description: Check whether the current session can be closed cleanly — surfaces half-done work, unresolved questions, decisions made but never written down, unverified claims, and uncommitted changes. Read-only; reports and routes, never acts. Auto-invokes on "end gracefully", "can I close this", "anything I missed", "did we miss anything", "is this session done", "safe to close", "anything more then".
+description: Check whether the current session can be closed cleanly — surfaces half-done work, unresolved questions, decisions made but never written down, unverified claims, and uncommitted changes, each with a recommended disposition. Read-only; reports and routes, never acts. Auto-invokes on "end gracefully", "can I close this", "anything I missed", "did we miss anything", "is this session done", "safe to close", "anything more then".
 allowed-tools: [Read, Grep, Glob, Bash]
 ---
 
 # End Gracefully — Pre-Close Sweep
 
-Long, multitasking sessions lose threads. Something gets started and buried under
-the next thing; a question gets asked and never answered; a decision gets made in
-conversation and never written anywhere. This skill looks back over the session
-and says whether it's safe to close.
+Long sessions lose threads. This one looks back and says whether it's safe to
+close — and for anything left, what to *do* about it.
 
-**This skill is read-only.** It never commits, never writes files, never edits
-docs. It reports what's outstanding and points at the thing that handles it.
-That's what makes it safe to run at any moment.
+**Read-only.** Never commits, never writes files, never edits. It reports and
+routes. That is what makes it safe to run at any moment.
 
-## Scope
+**This runs when the user is done.** They are not looking for a report to read.
+Be terse, decide for them, and let them confirm. A long output here is a failure.
 
-Works in any session, with or without a handover setup. If `WORK.md` or
-`docs/sessions/` exist, use them as extra signal — but never require them, and
-never create them.
+## Step 1: Scan
 
-## Step 1: Re-read the session
+Re-read the whole session, not just the recent part — buried items are the point.
+Note the specific file, command, or question for each.
 
-Scan the whole conversation, not just the recent part — the buried items are the
-point. For each, note the specific file, command, or question involved.
+1. **Half-done** — started, completion never confirmed
+2. **Unanswered** — a question raised, then overtaken and forgotten
+3. **Unrecorded** — a decision settled in conversation, nothing on disk
+4. **Unverified** — asserted to work, never actually run
+5. **Deferred** — punted explicitly, captured nowhere
 
-Look for:
-
-1. **Half-done work** — something started whose completion was never confirmed.
-   A file edited but never run, a test written but never executed, a migration
-   half-applied.
-2. **Unresolved questions** — a question raised (by either side) that got
-   overtaken by later work and never answered.
-3. **Decisions made but unrecorded** — a choice settled in conversation with
-   nothing written to disk. These are the most expensive to lose: the reasoning
-   evaporates and gets re-litigated later.
-4. **Unverified claims** — anything asserted to work that was never actually
-   run. Distinguish "I ran it and it passed" from "this should work now."
-5. **Deferred items** — things explicitly punted ("let's do that later") that
-   were never captured anywhere.
-
-## Step 2: Check the working tree
-
-Only if this is a git repo:
+Then, if this is a git repo:
 
 ```bash
 git status --short
 git log --oneline @{upstream}..HEAD 2>/dev/null
 ```
 
-Report uncommitted changes and unpushed commits. **Do not commit or push** — say
-what's there and let the user decide.
+If `docs/sessions/` exists, check for a log dated today — that answers "did we
+already end this?" without the user looking.
 
-## Step 3: Check whether it's already closed
+## Step 2: Assign a disposition
 
-If `docs/sessions/` exists, check for a log dated today. Answers "did we already
-end this?" without the user having to look.
+Every item gets exactly one, chosen by you before showing it:
 
-## Step 4: Report
+| Tag | Means | Use when |
+|-----|-------|----------|
+| `DO` | Finish it now | Small enough to close in a few minutes |
+| `WRITE` | Must survive the session | A decision or next step a future session needs |
+| `DROP` | Safe to neglect | Say why in four words or less |
+| `?` | Needs the user's call | Genuinely their decision — always attach your recommendation |
 
-Lead with the verdict.
+Default to `DROP` when unsure. Reaching for `?` on everything defeats the point;
+if more than two items are `?`, you haven't done the thinking.
 
-**If nothing is outstanding:**
+## Step 3: Report
+
+**Clean — one line, stop:**
 
 ```
-Safe to close. [One line on what this session did.]
+Safe to close. <what this session did, one clause>
 ```
 
-Say this plainly when it's true. A clean session is a normal outcome.
-
-**If something is outstanding**, list only real items, most consequential first:
+**Not clean — verdict line, then one line per item. Max 5. No preamble:**
 
 ```
-Not clean yet — N things:
+Not clean — 1 to write, 1 to decide, 1 droppable.
 
-1. [Half-done] `src/auth/webhook.ts` — constructEvent is stubbed; signature
-   verification never written.
-2. [Unanswered] You asked whether the Pi should own the watcher; we moved on
-   without deciding.
-3. [Unrecorded] Decided to drop the retry layer because of the rate limit —
-   nothing on disk.
-4. [Uncommitted] 3 modified files, 2 unpushed commits.
+WRITE  Decided to drop the retry layer (rate limit) — nothing on disk. → /handover:end
+?      `webhook.ts` constructEvent stubbed. → recommend: note as next step, don't start now
+DROP   3 modified files — all scratch output.
+
+Say "do it" and I'll handle the WRITE items.
 ```
 
-Then route, don't act:
+Rules for the output:
 
-- Unrecorded decisions or a session worth logging → suggest `/handover:end` if
-  handover is set up here; otherwise say what's worth writing down and where
-- Uncommitted work → ask whether to commit; committing is a separate step
-- Half-done work → offer to finish it now, or to note it as the next step
+- Verdict line first, counts by tag
+- One line per item: tag, what it is, then `→` the action
+- Hard cap of 5 items — if there are more, keep the 5 that matter and say
+  "+N minor"
+- No headings, no explanation of the categories, no closing summary
+- Uncommitted work is reported, never committed
 
 ## Do not manufacture work
 
-The failure mode is inventing loose ends to look thorough. Apply this bar:
+- Pre-existing backlog is not a loose end from this session
+- A file read but not changed is not unfinished
+- "Could be improved" is not outstanding
+- Advisory sessions, and ones that answered their own question, are clean
 
-- Pre-existing backlog is **not** a loose end from this session
-- A file you read but didn't change is not unfinished work
-- "Could be improved" is not outstanding — only things *this session* opened
-- If the session was advisory, or answered its own question, it's clean
-
-**Reporting "safe to close" on a clean session is a correct answer, not a lazy
-one.** An item is only outstanding if a future session would be worse off for
-not knowing it.
+**"Safe to close" is a correct answer, not a lazy one.** An item counts only if a
+future session would be worse off not knowing it.
