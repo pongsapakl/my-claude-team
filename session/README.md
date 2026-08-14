@@ -35,9 +35,8 @@ a commit for uncommitted work. That's what makes it safe to run mid-session.
 
 **It runs when you're done, so it has to be short.** Verdict line, then one line
 per item, capped at five. Every item carries a disposition decided in advance —
-`DO` (finish now), `WRITE` (must survive), `DROP` (safe to neglect), or `?` (your
-call, with a recommendation attached) — so closing out is confirming, not
-triaging.
+`WRITE` (must survive), `DROP` (safe to neglect), or `?` (your call, with a
+recommendation attached) — so closing out is confirming, not triaging.
 
 **It must be willing to say "safe to close."** The obvious failure mode is
 inventing loose ends to look thorough. Pre-existing backlog isn't a loose end;

@@ -9,8 +9,8 @@ allowed-tools: [Read, Grep, Glob, Bash]
 Long sessions lose threads. This one looks back and says whether it's safe to
 close — and for anything left, what to *do* about it.
 
-**Read-only.** Never commits, never writes files, never edits. It reports and
-routes. That is what makes it safe to run at any moment.
+**Read-only.** Never commits, never writes, never edits — it reports and routes.
+That is what makes it safe to run at any moment.
 
 **This runs when the user is done.** They are not looking for a report to read.
 Be terse, decide for them, and let them confirm. A long output here is a failure.
@@ -34,21 +34,21 @@ git log --oneline @{upstream}..HEAD 2>/dev/null
 ```
 
 If `docs/sessions/` exists, check for a log dated today — that answers "did we
-already end this?" without the user looking.
+already end this?" without the user looking. Optional signal only: never require
+it, never create it.
 
 ## Step 2: Assign a disposition
 
 Every item gets exactly one, chosen by you before showing it:
 
-| Tag | Means | Use when |
-|-----|-------|----------|
-| `DO` | Finish it now | Small enough to close in a few minutes |
-| `WRITE` | Must survive the session | A decision or next step a future session needs |
-| `DROP` | Safe to neglect | Say why in four words or less |
-| `?` | Needs the user's call | Genuinely their decision — always attach your recommendation |
+| Tag | Means |
+|-----|-------|
+| `WRITE` | Must survive the session — a decision or next step a future session needs |
+| `DROP` | Safe to neglect; say why, briefly |
+| `?` | Genuinely the user's call — always attach your recommendation |
 
-Default to `DROP` when unsure. Reaching for `?` on everything defeats the point;
-if more than two items are `?`, you haven't done the thinking.
+Default to `DROP` when unsure. `?` is for real forks, not for offloading the
+thinking.
 
 ## Step 3: Report
 
