@@ -30,7 +30,42 @@ independently.
 - The marketplace name, plugin name, and skill name are three separate things. The **plugin** name is what prefixes commands (`/handover:start`)
 - Validate before pushing: `claude plugin validate .`
 - `claude plugin update` needs the fully-qualified id (`handover@pongsapakl-skills`), not the bare plugin name
-- Bump the version in the plugin's own `plugin.json` when its skills change; other plugins are unaffected
+- Bump the version in the plugin's own `plugin.json` when its files change; other plugins are unaffected
+
+## Versioning
+
+Strict semver per plugin, enforced at push time by `.githooks/pre-push` →
+`scripts/check-version-bump.sh`. If any file under `<plugin>/` changed since the
+upstream ref and that plugin's `version` did not, the push is **blocked**.
+Downgrades and non-semver strings are rejected too.
+
+| Bump | When |
+|------|------|
+| PATCH | Fix or wording; no behaviour change for the user |
+| MINOR | New skill, or new behaviour in an existing one |
+| MAJOR | Renamed or removed a skill, or changed a file contract (`WORK.md`, `TODO.md`, session-log format) |
+
+**The gate never bumps for you.** It fails and tells you the options; choosing
+the number is a deliberate decision. A version maps to a *group* of commits, not
+to each commit — which is why the check runs on push, not on commit.
+
+`<plugin>/README.md` is excluded from the check: doc-only edits don't need a
+version. Changes outside any plugin directory (root README, CLAUDE.md, scripts)
+need no bump at all.
+
+Enable the hook once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+## Working on Skills
+
+- **The dogfooding loop is not live.** The installed plugin is a clone of the GitHub repo, so editing files here changes nothing in a running session until: push → `claude plugin marketplace update pongsapakl-skills` → `claude plugin update <plugin>@pongsapakl-skills` → restart the session
+- **Editing manifests programmatically: always `ensure_ascii=False`.** Python's `json.dumps` defaults to escaping non-ASCII, which silently turns every em-dash into `—`. It still validates and still looks broken
+- **Verify plugin mechanics before designing around them.** Scaffold the layout in a scratch directory and run `claude plugin validate` on it. Cheaper than reversing a structural decision after the fact
+- **Never duplicate metadata across manifests.** `marketplace.json` entries stay `name` + `source`; description and keywords live in `plugin.json` only
+- **Hand-written sections: fix mechanics, never voice.** Spelling, capitalization, and punctuation may be corrected silently. Grammar, wording, and phrasing get flagged for the owner, not changed
 
 ## Docs Ownership
 
