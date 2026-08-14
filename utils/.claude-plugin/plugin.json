@@ -1,6 +1,6 @@
 {
   "name": "utils",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Maintainer tools for this marketplace itself — porting a skill that proved useful in a working session into a published plugin.",
   "author": {
     "name": "Pongsapak Lueangratana"
@@ -8,6 +8,12 @@
   "license": "MIT",
   "repository": "https://github.com/pongsapakl/pongsapakl-skills",
   "homepage": "https://github.com/pongsapakl/pongsapakl-skills#readme",
-  "keywords": ["maintainer", "authoring", "release"],
-  "skills": ["./skills/ship-this-skill"]
+  "keywords": [
+    "maintainer",
+    "authoring",
+    "release"
+  ],
+  "skills": [
+    "./skills/ship-this-skill"
+  ]
 }

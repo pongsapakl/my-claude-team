@@ -94,13 +94,18 @@ its skills**:
 Add the skill directory to that plugin's `skills` array in `plugin.json` —
 unlisted skills do not ship.
 
-Then **ask the user for the version bump**. Never choose it silently:
+Then set the version. Pick it yourself, but **say which and why** — never bump
+silently, and never bury it in a commit message the user won't read:
 
-| Bump | When |
-|------|------|
-| PATCH | Fix or wording; no behaviour change |
-| MINOR | New skill, or new behaviour in an existing one |
-| MAJOR | Renamed or removed a skill, or changed a file contract |
+| Bump | When | Who decides |
+|------|------|-------------|
+| PATCH | Fix or wording; no behaviour change | You. State it and proceed. |
+| MINOR | New skill, or new behaviour in an existing one | You. State it and proceed. |
+| MAJOR | Renamed or removed a skill, or changed a file contract | **Stop and confirm with the user.** |
+
+MAJOR is the one that breaks someone's install or invalidates files already on
+disk, so it is the only bump worth interrupting for. Stopping on every PATCH just
+trains the user to say "yes" without reading.
 
 A new plugin starts at `0.1.0`. A push without a bump is blocked by
 `scripts/check-version-bump.sh`, so this step is not optional.
@@ -145,7 +150,7 @@ marketplace repo is checked out. Never write into a repo you haven't confirmed.
 ## Do not
 
 - Copy the skill into the current working repo — it installs from the marketplace
-- Bump the version without asking
+- Bump the version without saying which and why, or ship a MAJOR without confirming
 - Ship content that names a real path, host, or dataset from this machine
 - Add a skill to a plugin whose membership rule it doesn't fit, because it's
   convenient
