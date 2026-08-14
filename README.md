@@ -1,6 +1,6 @@
 # pongsapakl-skills
 
-<!-- [Claude when you update readme please dont edit this part. This is handwritten (or handtyped) and I wanted to keep it as is. Below ## Quick Install you can do whatever you are born to do.] -->
+<!-- [Claude when you update readme please dont edit this part. This is handwritten (or handtyped) and I wanted to keep it as is. Below ## What This Is you can do whatever you are born to do.] -->
 
 Everyone is having their own marketplace and plugins, so let me have one.
 
