@@ -43,7 +43,7 @@ Every item gets exactly one, chosen by you before showing it:
 
 | Tag | Means |
 |-----|-------|
-| `WRITE` | Must survive the session — a decision or next step a future session needs |
+| `WRITE` | Must survive the session and is recorded nowhere a future session would look. An artifact can be the record — a dated, self-describing archive path needs no note; a rationale buried only in a commit message still does |
 | `DROP` | Safe to neglect; say why, briefly |
 | `?` | Genuinely the user's call — always attach your recommendation |
 
@@ -67,7 +67,8 @@ WRITE  Decided to drop the retry layer (rate limit) — nothing on disk. → /ha
 ?      `webhook.ts` constructEvent stubbed. → recommend: note as next step, don't start now
 DROP   3 modified files — all scratch output.
 
-Say "do it" and I'll handle the WRITE items.
+Say "do it" and I'll handle the WRITE items — or name a ? and I'll do what I
+recommended.
 ```
 
 Rules for the output:
@@ -81,7 +82,9 @@ Rules for the output:
 
 ## Do not manufacture work
 
-- Pre-existing backlog is not a loose end from this session
+- Pre-existing backlog and standing machine state are not loose ends from this
+  session — touching an area does not adopt its old risks, unless this session
+  materially increased them
 - A file read but not changed is not unfinished
 - "Could be improved" is not outstanding
 - Advisory sessions, and ones that answered their own question, are clean
